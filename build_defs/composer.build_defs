@@ -6,7 +6,8 @@ def compose(name:str, compose_yaml:str, visibility=None):
         srcs = [compose_yaml],
         outs = ['docker-compose.yaml'],
         cmd = [
-            "sed -e 's/${DOCKER_IP}/'\"$(docker-machine ip)\"/g %s >> $OUT" % compose_yaml,
+            # Will add more complicated transformations her probably
+            "cat %s > $OUT" % compose_yaml,
         ],
     )
 

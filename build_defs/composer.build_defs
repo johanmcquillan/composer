@@ -16,8 +16,3 @@ def compose(name:str, compose_yaml:str, visibility=None):
         deps = [":%s#%s" % (name, yaml_suffix)],
         visibility=visibility,
     )
-
-compose(
-    name = 'kafka-pkg',
-    compose_yaml='templates/kafka-zk-singlebroker.yaml'
-)

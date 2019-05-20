@@ -1,19 +1,20 @@
 def compose(name:str, compose_yaml:str, visibility=None):
-    yaml_suffix = 'yaml'
+    yaml_suffix = "yaml"
+    yaml_path = join_path(package_name(), compose_yaml)
 
     genrule(
-        name = "%s#%s" % (name, yaml_suffix),
+        name = "_%s#%s" % (name, yaml_suffix),
         srcs = [compose_yaml],
-        outs = ['docker-compose.yaml'],
+        outs = ["docker-compose.yaml"],
         cmd = [
             # Will add more complicated transformations her probably
-            "cat %s > $OUT" % compose_yaml,
+            "cat %s > $OUT" % yaml_path,
         ],
     )
 
     sh_binary(
         name = name,
-        srcs = ['compose.sh'],
-        deps = [":%s#%s" % (name, yaml_suffix)],
+        srcs = ["compose.sh"],
+        deps = [":_%s#%s" % (name, yaml_suffix)],
         visibility=visibility,
     )

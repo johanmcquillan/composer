@@ -1,5 +1,5 @@
 filegroup(
-    name = "composer",
-    srcs = ["composer.build_defs"],
+    name = "compose",
+    srcs = ["compose.build_defs"],
     visibility = ["PUBLIC"],
 )

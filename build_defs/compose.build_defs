@@ -1,0 +1,19 @@
+def compose(name:str, yaml:str, visibility=None):
+    script = [
+        '#!/bin/bash',
+        'set -e',
+        # We need to escape the $ else this cmd will be evaluated before echo
+        'eval \$(docker-machine env)',
+        'docker_ip=$(docker-machine ip)',
+        'echo $docker_ip',
+        'sed -e "s/__DOCKER_IP__/${docker_ip}/g" \'$SRC\' | docker-compose -f - up -d --force-recreate --remove-orphans',
+    ]
+    cmds = ["echo '%s' >> $OUT" % s for s in script]
+    genrule(
+        name = name,
+        srcs = [yaml],
+        outs = ["%s.sh" % name],
+        cmd = cmds,
+        visibility = visibility,
+        binary = True,
+    )
